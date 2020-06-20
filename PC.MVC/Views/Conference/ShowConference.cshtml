@@ -1,0 +1,76 @@
+﻿
+@{
+    Layout = null;
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+    table, table tr th, table tr td {
+        border: 1px solid black;
+    }
+    table tr td{
+        text-align:center;
+    }
+</style>
+<h1>筛选</h1>
+<table class="table table-hover" style="font-size: small;">
+    <tr>
+        <td>选择</td>
+        <td>会议名称</td>
+        <td>会议地点</td>
+        <td>会议日期</td>
+        <td>会议状态</td>
+        <td>产品组</td>
+        <td>操作</td>
+    </tr>
+    <tbody id="tb">
+    </tbody>
+
+</table>
+<script>
+    //显示物料信息
+    $(function () {
+        Show();
+    })
+    //ajax显示物料信息
+    function Show() {
+        $.ajax({
+            url: "http://localhost:49764/api/Conference/ShowConference",
+            dataType: "json",
+            type: "Get",
+
+            success: function (d) {
+                $("#tb").empty();
+                var myDate = new Date();
+                let nowTime = myDate.getTime();
+                console.log(nowTime)
+                $(d).each(function (i, k) {
+                    var newDateStart = new Date(k.con_StartTime);
+                    newDateStart = newDateStart.getTime();
+                    var newDateEnd = new Date(k.con_EndTime);
+                    newDateEndnewDate2 = newDateEnd.getTime();
+
+                    var list = `<tr> `
+                        + `<td><input id="Checkbox1" type="checkbox" name="ck_id" data="${k.id}" /></td>`
+                        + `<td>${k.con_Name}</td>`
+                        + `<td>${k.con_Place}</td>`
+                        + `<td>${k.con_StartTime}到${k.con_EndTime}</td>`
+                        + `<td>${nowTime > newDateEnd ? "已结束" : nowTime < newDateStart ? "未开始":"进行中"}</td>`
+                        + `<td>${k.product_Name}</td>`
+                        + `<td><a lerf="#" OnClick="s(${k.id})">查看详情</a>
+                               <a lerf="#" OnClick="s(${k.id})">编辑</a>
+                               <a lerf="#" OnClick="s(${k.id})">删除</a>
+                               <a lerf="#" OnClick="s(${k.id})">分配名额</a>
+                               <a lerf="#" OnClick="s(${k.id})">修改名额</a>
+                               <a lerf="#" OnClick="s(${k.id})">审批名单</a>
+                               <a lerf="#" OnClick="s(${k.id})">查看返还记录</a>
+                           </td>`
+                        + `</tr>`
+                    $("#tb").append(list);
+                })
+            }
+        })
+    }
+</script>
+
+
