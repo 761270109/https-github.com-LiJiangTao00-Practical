@@ -18,6 +18,7 @@ namespace PC.API.Controllers.Conference
         public ConferenceController(IConferenceBll bll)
         {
 
+
             _bll = bll;
         }
         /// <summary>
